@@ -1,0 +1,12 @@
+.search-bar-container {
+    max-width: 100%; /* ou la largeur de votre choix */
+    margin-bottom: 10px;
+  }
+  
+  .search-bar-container .bi {
+    cursor: pointer;
+  }
+
+  .marginButton {
+    margin-bottom: 10px;
+  }

@@ -9,7 +9,7 @@ import { Book } from '../book';
    <form class="book-form" autocomplete="off" [formGroup]="bookForm" (ngSubmit)="submitForm()">
      <div class="form-floating mb-3">
        <input class="form-control" type="text" id="name" formControlName="name" placeholder="Name" required>
-       <label for="name">Name</label>
+       <label for="name">Nom du Livre</label>
      </div>
  
      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
@@ -20,39 +20,52 @@ import { Book } from '../book';
          Le nom doit avoir une taille de 3 minimum
        </div>
      </div>
- 
      <div class="form-floating mb-3">
-       <input class="form-control" type="text" formControlName="position" placeholder="Position" required>
-       <label for="position">Position</label>
-     </div>
- 
-     <div *ngIf="position.invalid && (position.dirty || position.touched)" class="alert alert-danger">
- 
-       <div *ngIf="position.errors?.['required']">
-         La position est obligatoire
+      <input class="form-control" type="text" formControlName="auteur" placeholder="Auteur" required>
+      <label for="auteur">Nom de l'Auteur</label>
+    </div>
+    <div *ngIf="auteur.invalid && (auteur.dirty || auteur.touched)" class="alert alert-danger">
+       <div *ngIf="auteur.errors?.['required']">
+         Le nom de l'auteur obligatoire
        </div>
-       <div *ngIf="position.errors?.['minlength']">
-       Le position doit avoir une taille de 5 minimum
+    </div>
+    <div class="form-floating mb-3">
+    <input class="form-control" type="number" formControlName="prix" placeholder="Prix" required>
+    <label for="prix">Prix</label>
+    </div>
+    <div *ngIf="prix.invalid && (prix.dirty || prix.touched)" class="alert alert-danger">
+       <div *ngIf="prix.errors?.['required']">
+         Le prix est obligatoire
        </div>
-     </div>
- 
+    </div>
      <div class="mb-3">
-       <div class="form-check">
-         <input class="form-check-input" type="radio" formControlName="level" name="level" id="level-junior" value="junior" required>
-         <label class="form-check-label" for="level-junior">Junior</label>
-       </div>
-       <div class="form-check">
-         <input class="form-check-input" type="radio" formControlName="level" name="level" id="level-mid" value="mid">
-         <label class="form-check-label" for="level-mid">Mid</label>
-       </div>
-       <div class="form-check">
-         <input class="form-check-input" type="radio" formControlName="level" name="level" id="level-senior"
-           value="senior">
-         <label class="form-check-label" for="level-senior">Senior</label>
-       </div>
+      <label for="type">Type de Livre</label>
+      <select class="form-select" id="type" formControlName="type" required>
+        <option value="">Choisir...</option>
+        <option value="Bande déssinée">Bande dessinée</option>
+        <option value="Roman">Roman</option>
+        <option value="Biographie">Biographie</option>
+        <option value="Science Fiction">Science-fiction</option>
+        <option value="Fantasy">Fantasy</option>
+      </select>
      </div>
+     <div *ngIf="type.invalid && (type.dirty || type.touched)" class="alert alert-danger">
+       <div *ngIf="type.errors?.['required']">
+         Le type de livre est obligatoire
+       </div>
+    </div>
+     <div class="form-floating mb-3">
+      <textarea class="form-control" formControlName="description" placeholder="Description" required></textarea>
+      <label for="description">Description</label>
+    </div>
+    <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger">
+       <div *ngIf="description.errors?.['required']">
+         La description est obligatoire
+       </div>
+    </div>
+
  
-     <button class="btn btn-primary" type="submit" [disabled]="bookForm.invalid">Add</button>
+     <button class="btn btn-primary" type="submit" [disabled]="bookForm.invalid">Ajouter</button>
    </form>
  `,
  styles: [
@@ -78,18 +91,23 @@ export class BookFormComponent implements OnInit {
  constructor(private fb: FormBuilder) { }
  
  get name() { return this.bookForm.get('name')!; }
- get position() { return this.bookForm.get('position')!; }
- get level() { return this.bookForm.get('level')!; }
+ get auteur() { return this.bookForm.get('auteur')!; }
+ get type() { return this.bookForm.get('type')!; }
+  get prix() { return this.bookForm.get('prix')!; }
+  get description() { return this.bookForm.get('description')!; }
  
  ngOnInit() {
    this.initialState.subscribe(book => {
      this.bookForm = this.fb.group({
        name: [ book.name, [Validators.required] ],
-       position: [ book.position, [ Validators.required, Validators.minLength(5) ] ],
-       level: [ book.level, [Validators.required] ]
+       auteur: [ book.auteur, [ Validators.required ] ],
+        prix: [ book.prix, [ Validators.required ] ],
+        description : [ book.description, [ Validators.required ] ],
+       type: [ book.type, [Validators.required] ]
      });
    });
- 
+   console.log(this.bookForm);
+   
    this.bookForm.valueChanges.subscribe((val) => { this.formValuesChanged.emit(val); });
  }
  

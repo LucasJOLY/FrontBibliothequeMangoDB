@@ -1,6 +1,8 @@
 export interface Book {
     name?: string;
-    position?: string;
-    level?: 'junior' | 'mid' | 'senior';
+    auteur?: string;
+    prix?: number;
+    description?: string;
+    type? : string;
     _id?: string;
  }
